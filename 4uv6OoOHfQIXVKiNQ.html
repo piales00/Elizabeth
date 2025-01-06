@@ -1,0 +1,541 @@
+<html>
+  <head>
+    <base href="." />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>&#xbf;Quieres ser mi novia?</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+      }
+
+      .container {
+        text-align: center;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        width: 90%;
+        max-width: 500px;
+        margin: 20px;
+      }
+
+      h1 {
+        color: #ff4b6e;
+        margin-bottom: 30px;
+        font-size: clamp(1.5rem, 4vw, 2rem);
+      }
+
+      .word-carousel {
+        display: inline-block;
+        color: #ff4b6e;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      button {
+        padding: 10px 30px;
+        font-size: clamp(16px, 3vw, 18px);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: transform 0.2s;
+        margin: 5px;
+      }
+
+      #siBtn {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      #noBtn {
+        background-color: #ff4b6e;
+        color: white;
+        position: relative;
+      }
+
+      #giftBtn {
+        background-color: #9c27b0;
+        color: white;
+        margin-top: 20px;
+      }
+
+      .success-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        padding: 20px;
+      }
+
+      .modal-content {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 15px;
+        text-align: center;
+        width: 90%;
+        max-width: 500px;
+      }
+
+      .modal-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+        margin: 20px 0;
+      }
+
+      .modal-content h2 {
+        font-size: clamp(1.2rem, 4vw, 1.8rem);
+      }
+
+      .heart {
+        color: red;
+        font-size: clamp(20px, 4vw, 24px);
+        animation: pulse 1s infinite;
+      }
+
+      .flower-garden {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, #ffafbd, #ffc3a0);
+        z-index: 2000;
+        overflow: hidden;
+      }
+
+      .flower {
+        position: absolute;
+        animation: sway 3s ease-in-out infinite;
+        transform-origin: bottom center;
+        cursor: pointer;
+      }
+
+      .flower svg {
+        width: clamp(30px, 8vw, 50px);
+        height: auto;
+      }
+
+      .giant-rose {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: clamp(200px, 40vw, 400px);
+        height: auto;
+        z-index: 2001;
+        animation: roseBloom 2s ease-out forwards;
+        cursor: pointer;
+      }
+
+      @keyframes roseBloom {
+        0% {
+          transform: translate(-50%, -50%) scale(0);
+        }
+        100% {
+          transform: translate(-50%, -50%) scale(1);
+        }
+      }
+
+      @keyframes petalSway {
+        0%,
+        100% {
+          transform: rotate(-3deg);
+        }
+        50% {
+          transform: rotate(3deg);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.2);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes sway {
+        0%,
+        100% {
+          transform: rotate(-5deg);
+        }
+        50% {
+          transform: rotate(5deg);
+        }
+      }
+
+      @keyframes slideOut {
+        0% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-20px);
+          opacity: 0;
+        }
+      }
+
+      @keyframes slideIn {
+        0% {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 1rem;
+        }
+
+        .buttons {
+          gap: 10px;
+        }
+
+        button {
+          padding: 8px 20px;
+        }
+
+        .giant-rose {
+          width: 80vw;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+        &#xbf;Quieres ser mi <span class="word-carousel">novia</span>?
+        <span class="heart">&#x2764;&#xfe0f;</span>
+      </h1>
+      <div class="buttons">
+        <button id="siBtn">
+          SIIIIII, POR DIOS YA TE HABIAS TARDADO DEMASIADO
+        </button>
+        <button id="noBtn">No, soy una aburrida</button>
+      </div>
+    </div>
+
+    <div class="success-modal">
+      <div class="modal-content">
+        <h2>&#xa1;Sab&#xed;a que dir&#xed;as que s&#xed;! &#x1f498;</h2>
+        <img src="/eli.png" alt="Feliz juntos" />
+        <p>Y BUEEEEEE, chicos as&#xed; est&#xe1; mi novia</p>
+        <button id="giftBtn">Ver regalo</button>
+      </div>
+    </div>
+
+    <div class="flower-garden" id="flowerGarden"></div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const noBtn = document.getElementById("noBtn");
+        const siBtn = document.getElementById("siBtn");
+        const modal = document.querySelector(".success-modal");
+        const giftBtn = document.getElementById("giftBtn");
+        const flowerGarden = document.getElementById("flowerGarden");
+        const wordCarousel = document.querySelector(".word-carousel");
+        const words = [
+          "esposa",
+          "skibidinovia",
+          "amiga",
+          "compañera",
+          "gravedad",
+          "novia",
+          "mejor amiga",
+          "electrón",
+          "imposible",
+          "mundo",
+          "Beatriz",
+          "Julieta",
+          "Milena",
+          "Caseres",
+          "novia",
+          "Cenicienta",
+          "Elizabeth Bennet",
+          "Catherine Earnshaw",
+          "Jane Eyre",
+          "Daisy Buchanan",
+          "Estrella binaria",
+          "Fotón",
+          "Rosalind Franklin",
+          "Marie Curie",
+          "Medea",
+          "Andrómeda",
+          "Luna",
+          "Aurora",
+          "Euforia",
+          "Antonia",
+          "Florence Nightingale",
+          "Constelación",
+          "Isolde",
+          "Guinevere",
+          "Eco",
+          "Hélène",
+          "Selene",
+          "Electra",
+          "Pandora",
+          "Rocío",
+          "Penélope",
+          "Anastasia",
+          "Valeria",
+          "Alba",
+          "Niebla",
+          "Sirena",
+          "Estrella fugaz",
+          "Perseo",
+          "Galaxia",
+          "Capulet",
+          "Amor imposible",
+          "Magnetismo",
+          "Big Bang",
+          "Quásar",
+          "Materia oscura",
+          "Aurora Boreal",
+          "Corazón de cristal",
+          "Nastenka",
+          "Soñador",
+          "Noches blancas",
+          "Crepúsculo",
+          "Lágrimas de San Lorenzo",
+          "Vesna",
+          "Estrella polar",
+          "Encuentro fugaz",
+          "Esperanza",
+          "Promesa rota",
+          "Noche eterna",
+          "Ilusión",
+          "Susurro de nieve",
+          "Puente sobre el río",
+          "Melancolía",
+          "Farol encendido",
+          "Calle desierta",
+          "Atardecer en San Petersburgo",
+          "Abismo <3",
+          "Sombras danzantes",
+        ];
+
+        let currentIndex = 0;
+        function changeWord() {
+          wordCarousel.style.animation = "slideOut 0.3s forwards";
+          setTimeout(() => {
+            wordCarousel.textContent = words[currentIndex];
+            wordCarousel.style.animation = "slideIn 0.2s forwards";
+            currentIndex = (currentIndex + 1) % words.length;
+            if (currentIndex < words.length - 1) {
+              setTimeout(changeWord, 300);
+            }
+          }, 300);
+        }
+        setTimeout(changeWord, 1000);
+        noBtn.addEventListener("mouseover", function () {
+          const maxX = window.innerWidth - noBtn.clientWidth;
+          const maxY = window.innerHeight - noBtn.clientHeight;
+          const randomX = Math.floor(Math.random() * maxX);
+          const randomY = Math.floor(Math.random() * maxY);
+          noBtn.style.position = "fixed";
+          noBtn.style.left = randomX + "px";
+          noBtn.style.top = randomY + "px";
+        });
+        noBtn.addEventListener("touchstart", function (e) {
+          e.preventDefault();
+          const maxX = window.innerWidth - noBtn.clientWidth;
+          const maxY = window.innerHeight - noBtn.clientHeight;
+          const randomX = Math.floor(Math.random() * maxX);
+          const randomY = Math.floor(Math.random() * maxY);
+          noBtn.style.position = "fixed";
+          noBtn.style.left = randomX + "px";
+          noBtn.style.top = randomY + "px";
+        });
+        siBtn.addEventListener("click", function () {
+          modal.style.display = "flex";
+          confetti();
+        });
+        modal.addEventListener("click", function (e) {
+          if (e.target === modal) {
+            modal.style.display = "none";
+          }
+        });
+        giftBtn.addEventListener("click", function () {
+          flowerGarden.style.display = "block";
+          createFlowerGarden();
+        });
+        function createFlower(x, y) {
+          const flower = document.createElement("a");
+          flower.className = "flower";
+          flower.style.left = x + "px";
+          flower.style.top = y + "px";
+          flower.innerHTML = `
+                <svg viewBox="0 0 50 50">
+                    <circle cx="25" cy="25" r="10" fill="#ff69b4"/>
+                    <circle cx="25" cy="15" r="8" fill="#ff69b4"/>
+                    <circle cx="35" cy="25" r="8" fill="#ff69b4"/>
+                    <circle cx="25" cy="35" r="8" fill="#ff69b4"/>
+                    <circle cx="15" cy="25" r="8" fill="#ff69b4"/>
+                    <circle cx="25" cy="25" r="5" fill="#ffff00"/>
+                </svg>
+            `;
+          return flower;
+        }
+        function createFlowerGarden() {
+          flowerGarden.innerHTML = "";
+          const links = [
+            "https://open.spotify.com/intl-es/track/35LdDKNMwvKftENaj1WIwF?si=66d16ffe090745b7",
+            "https://open.spotify.com/intl-es/track/2mOp5BSfbZrf4tunZ5mPit?si=e42bdf05feea41b4",
+            "https://open.spotify.com/intl-es/track/1zDuB9BuEt9Bm3J8OtKEvq?si=79e87e9ec46247db",
+            "https://open.spotify.com/intl-es/track/4uzKAj0mIyYmyhsRRyPXaQ?si=1d5e5cfde83e4875",
+            "https://open.spotify.com/intl-es/track/56sxN1yKg1dgOZXBcAHkJG?si=0a6ef5f04feb4f58",
+            "https://open.spotify.com/intl-es/track/00kIWJu9IHiQ6i0qJAU0Z9?si=09199d2566604e9b",
+            "https://open.spotify.com/intl-es/track/5iP1zdcSsg8KPRiY9Zssx7?si=c8eff585dce24ba8",
+            "https://open.spotify.com/intl-es/track/6rY5FAWxCdAGllYEOZMbjW?si=50a358a456084fef",
+            "https://open.spotify.com/intl-es/track/00WLowvlN5cjkYpQV6pjo4?si=23612df75d954c61",
+            "https://open.spotify.com/intl-es/track/5DqdesEfbRyOlSS3Tf6c29?si=35409c59ed394efb",
+            "https://open.spotify.com/intl-es/track/58cLm4PaHNt8DDr9ayZnNz?si=0cbb91101e7142a1",
+            "https://open.spotify.com/intl-es/track/1wQXj5bgxyZQ2XmE2X9s6n?si=03571a98347a4770",
+          ];
+          const giantRose = document.createElement("a");
+          giantRose.className = "giant-rose";
+          giantRose.href =
+            "https://open.spotify.com/intl-es/track/45h4w81P5iJJTSeR0jJUQ8?si=c62f8725507a4b54";
+          giantRose.innerHTML = `
+                <svg viewBox="0 0 200 200">
+                    <g transform="translate(100,100)">
+                        <path d="M0,0 L0,80" stroke="#2d5a27" stroke-width="8"/>
+                        <path d="M0,40 C-20,30 -30,50 -10,60" fill="#2d5a27">
+                            <animate attributeName="d" dur="3s" repeatCount="indefinite"
+                                values="M0,40 C-20,30 -30,50 -10,60;
+                                        M0,40 C-25,35 -35,55 -15,65;
+                                        M0,40 C-20,30 -30,50 -10,60"/>
+                        </path>
+                        <path d="M0,40 C20,30 30,50 10,60" fill="#2d5a27">
+                            <animate attributeName="d" dur="3s" repeatCount="indefinite"
+                                values="M0,40 C20,30 30,50 10,60;
+                                        M0,40 C25,35 35,55 15,65;
+                                        M0,40 C20,30 30,50 10,60"/>
+                        </path>
+                        <g>
+                            ${Array.from(
+                              {
+                                length: 12,
+                              },
+                              (_, i) => {
+                                const angle = i * 30;
+                                return `
+                                    <path d="M0,0 C-20,-20 -20,-40 0,-50 C20,-40 20,-20 0,0" 
+                                        fill="#ff1493" 
+                                        transform="rotate(${angle})"
+                                        opacity="${0.7 + Math.random() * 0.3}">
+                                        <animate attributeName="d" dur="${
+                                          2 + Math.random()
+                                        }s" repeatCount="indefinite"
+                                            values="M0,0 C-20,-20 -20,-40 0,-50 C20,-40 20,-20 0,0;
+                                                    M0,0 C-22,-22 -22,-42 0,-52 C22,-42 22,-22 0,0;
+                                                    M0,0 C-20,-20 -20,-40 0,-50 C20,-40 20,-20 0,0"/>
+                                    </path>
+                                `;
+                              }
+                            ).join("")}
+                        </g>
+                        <circle r="15" fill="#cc0066"/>
+                    </g>
+                </svg>
+            `;
+          flowerGarden.appendChild(giantRose);
+          const numFlowers = Math.min(
+            50,
+            Math.floor((window.innerWidth * window.innerHeight) / 10000)
+          );
+          for (let i = 0; i < numFlowers; i++) {
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+            const flower = createFlower(x, y);
+            flower.href = links[i % links.length];
+            flowerGarden.appendChild(flower);
+          }
+          const message = document.createElement("div");
+          message.style.position = "fixed";
+          message.style.top = "80%";
+          message.style.left = "50%";
+          message.style.transform = "translate(-50%, -50%)";
+          message.style.background = "rgba(255, 255, 255, 0.9)";
+          message.style.padding = "20px";
+          message.style.borderRadius = "10px";
+          message.style.fontSize = "clamp(18px, 4vw, 24px)";
+          message.style.textAlign = "center";
+          message.style.width = "80%";
+          message.style.maxWidth = "500px";
+          message.style.zIndex = "2002";
+          message.innerHTML =
+            "Para la chica más especial del mundo, mi 73 <3 \n\n\n Con amor, Piero Pérez";
+          flowerGarden.appendChild(message);
+        }
+      });
+      function confetti() {
+        const confettiCount = Math.min(
+          150,
+          Math.floor((window.innerWidth * window.innerHeight) / 5000)
+        );
+        for (let i = 0; i < confettiCount; i++) {
+          const confetti = document.createElement("div");
+          confetti.style.position = "fixed";
+          confetti.style.left = Math.random() * 100 + "vw";
+          confetti.style.top = -10 + "px";
+          confetti.style.width = "clamp(5px, 2vw, 10px)";
+          confetti.style.height = "clamp(5px, 2vw, 10px)";
+          confetti.style.backgroundColor = `hsl(${
+            Math.random() * 360
+          }, 100%, 50%)`;
+          confetti.style.borderRadius = "50%";
+          confetti.style.zIndex = "1000";
+          document.body.appendChild(confetti);
+          const animation = confetti.animate(
+            [
+              {
+                transform: "translateY(0) rotate(0)",
+                opacity: 1,
+              },
+              {
+                transform: `translateY(${window.innerHeight}px) rotate(${
+                  Math.random() * 360
+                }deg)`,
+                opacity: 0,
+              },
+            ],
+            {
+              duration: Math.random() * 2000 + 1000,
+              easing: "cubic-bezier(.37,0,.63,1)",
+            }
+          );
+          animation.onfinish = () => confetti.remove();
+        }
+      }
+    </script>
+  </body>
+</html>
