@@ -1,0 +1,332 @@
+<html><head><base href="." />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Quieres ser mi novia?</title>
+<style>
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+}
+
+.container {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    width: 90%;
+    max-width: 500px;
+    margin: 20px;
+}
+
+h1 {
+    color: #ff4b6e;
+    margin-bottom: 30px;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+}
+
+.word-carousel {
+    display: inline-block;
+    color: #ff4b6e;
+}
+
+.buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+button {
+    padding: 10px 30px;
+    font-size: clamp(16px, 3vw, 18px);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    margin: 5px;
+}
+
+#siBtn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#noBtn {
+    background-color: #ff4b6e;
+    color: white;
+    position: relative;
+}
+
+#giftBtn {
+    background-color: #9c27b0;
+    color: white;
+    margin-top: 20px;
+}
+
+.success-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-content {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 15px;
+    text-align: center;
+    width: 90%;
+    max-width: 500px;
+}
+
+.modal-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.modal-content h2 {
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+}
+
+.heart {
+    color: red;
+    font-size: clamp(20px, 4vw, 24px);
+    animation: pulse 1s infinite;
+}
+
+.flower-garden {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #ffafbd, #ffc3a0);
+    z-index: 2000;
+    overflow: hidden;
+}
+
+.flower {
+    position: absolute;
+    animation: sway 3s ease-in-out infinite;
+    transform-origin: bottom center;
+}
+
+.flower svg {
+    width: clamp(30px, 8vw, 50px);
+    height: auto;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+@keyframes sway {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+}
+
+@keyframes slideOut {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-20px); opacity: 0; }
+}
+
+@keyframes slideIn {
+    0% { transform: translateY(20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .buttons {
+        gap: 10px;
+    }
+    
+    button {
+        padding: 8px 20px;
+    }
+}
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>¿Quieres ser mi <span class="word-carousel">novia</span>? <span class="heart">❤️</span></h1>
+        <div class="buttons">
+            <button id="siBtn">Sí</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+
+    <div class="success-modal">
+        <div class="modal-content">
+            <h2>¡Sabía que dirías que sí! 💘</h2>
+            <img src="/Captura de pantalla 2025-01-06 102634.png" alt="Feliz juntos">
+            <p>Y BUEEEEEE, chicos así está mi novia</p>
+            <button id="giftBtn">Ver regalo</button>
+        </div>
+    </div>
+
+    <div class="flower-garden" id="flowerGarden"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const noBtn = document.getElementById('noBtn');
+    const siBtn = document.getElementById('siBtn');
+    const modal = document.querySelector('.success-modal');
+    const giftBtn = document.getElementById('giftBtn');
+    const flowerGarden = document.getElementById('flowerGarden');
+    const wordCarousel = document.querySelector('.word-carousel');
+
+    const words = ["esposa", "skibidinovia", "amiga", "compañera", "gravedad", "novia", "mejor amiga", "electrón", "imposible", "mundo", "Beatriz", "Julieta", "Milena", "Caseres", "abismo", "novia"];
+    let currentIndex = 0;
+
+    function changeWord() {
+        wordCarousel.style.animation = 'slideOut 0.3s forwards';
+        
+        setTimeout(() => {
+            wordCarousel.textContent = words[currentIndex];
+            wordCarousel.style.animation = 'slideIn 0.3s forwards';
+            currentIndex = (currentIndex + 1) % words.length;
+            
+            if (currentIndex < words.length - 1) {
+                setTimeout(changeWord, 300);
+            }
+        }, 300);
+    }
+
+    setTimeout(changeWord, 1000);
+
+    noBtn.addEventListener('mouseover', function() {
+        const maxX = window.innerWidth - noBtn.clientWidth;
+        const maxY = window.innerHeight - noBtn.clientHeight;
+        
+        const randomX = Math.floor(Math.random() * maxX);
+        const randomY = Math.floor(Math.random() * maxY);
+        
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = randomX + 'px';
+        noBtn.style.top = randomY + 'px';
+    });
+
+    noBtn.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        const maxX = window.innerWidth - noBtn.clientWidth;
+        const maxY = window.innerHeight - noBtn.clientHeight;
+        
+        const randomX = Math.floor(Math.random() * maxX);
+        const randomY = Math.floor(Math.random() * maxY);
+        
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = randomX + 'px';
+        noBtn.style.top = randomY + 'px';
+    });
+
+    siBtn.addEventListener('click', function() {
+        modal.style.display = 'flex';
+        confetti();
+    });
+
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    giftBtn.addEventListener('click', function() {
+        flowerGarden.style.display = 'block';
+        createFlowerGarden();
+    });
+
+    function createFlower(x, y) {
+        const flower = document.createElement('div');
+        flower.className = 'flower';
+        flower.style.left = x + 'px';
+        flower.style.top = y + 'px';
+        flower.innerHTML = `
+            <svg viewBox="0 0 50 50">
+                <circle cx="25" cy="25" r="10" fill="#ff69b4"/>
+                <circle cx="25" cy="15" r="8" fill="#ff69b4"/>
+                <circle cx="35" cy="25" r="8" fill="#ff69b4"/>
+                <circle cx="25" cy="35" r="8" fill="#ff69b4"/>
+                <circle cx="15" cy="25" r="8" fill="#ff69b4"/>
+                <circle cx="25" cy="25" r="5" fill="#ffff00"/>
+            </svg>
+        `;
+        return flower;
+    }
+
+    function createFlowerGarden() {
+        flowerGarden.innerHTML = '';
+        const numFlowers = Math.min(50, Math.floor((window.innerWidth * window.innerHeight) / 10000));
+        for (let i = 0; i < numFlowers; i++) {
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+            const flower = createFlower(x, y);
+            flowerGarden.appendChild(flower);
+        }
+
+        const message = document.createElement('div');
+        message.style.position = 'fixed';
+        message.style.top = '50%';
+        message.style.left = '50%';
+        message.style.transform = 'translate(-50%, -50%)';
+        message.style.background = 'rgba(255, 255, 255, 0.9)';
+        message.style.padding = '20px';
+        message.style.borderRadius = '10px';
+        message.style.fontSize = 'clamp(18px, 4vw, 24px)';
+        message.style.textAlign = 'center';
+        message.style.width = '80%';
+        message.style.maxWidth = '500px';
+        message.innerHTML = '¡Para la chica más especial del mundo! ❤️';
+        flowerGarden.appendChild(message);
+    }
+});
+
+function confetti() {
+    const confettiCount = Math.min(150, Math.floor((window.innerWidth * window.innerHeight) / 5000));
+    for (let i = 0; i < confettiCount; i++) {
+        const confetti = document.createElement('div');
+        confetti.style.position = 'fixed';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.top = -10 + 'px';
+        confetti.style.width = 'clamp(5px, 2vw, 10px)';
+        confetti.style.height = 'clamp(5px, 2vw, 10px)';
+        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        confetti.style.borderRadius = '50%';
+        confetti.style.zIndex = '1000';
+        
+        document.body.appendChild(confetti);
+
+        const animation = confetti.animate([
+            { transform: 'translateY(0) rotate(0)', opacity: 1 },
+            { transform: `translateY(${window.innerHeight}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+        ], {
+            duration: Math.random() * 2000 + 1000,
+            easing: 'cubic-bezier(.37,0,.63,1)'
+        });
+
+        animation.onfinish = () => confetti.remove();
+    }
+}
+</script>
+</body></html>
